@@ -42,3 +42,7 @@ This command will remove all data, including authentication information.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## Naji Notes
+
+I noticed that this didn't have any ability to filter via Topics, so I added the function and verbiage in the program navigation. Enjoy!
