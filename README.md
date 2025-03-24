@@ -29,6 +29,15 @@ npm install -g telegram-bulk-downloader
 
 To start downloading media files from a Telegram chat, simply run the `telegram-bulk-downloader` command in your terminal. The interface is interactive and will guide you through the process.
 
+### Finding Chat/Topic/Message IDs:
+The easiest way to find these IDs is to use the [Desktop](https://desktop.telegram.org/) or [Web](https://web.telegram.org/) app, right-click on any message, or create a new message and post, then select 'Copy Message Link' to parse the IDs from the URL. 
+
+The URL has the following structure: https://t.me/c/XXXXXXXXXX/YYYY/ZZZZ.
+The Chat ID is the XX.. portion of the URL with -100 prepended. (i.e. -1001234567891 or -1001987654321)
+The Topic ID is the YYYY portion of the URL.
+The Message ID is the ZZZZ portion of the URL.
+
+
 ### Wiping Data
 
 If you have finished using the tool and do not plan to use it for a while, it is recommended to delete the stored data as it contains sensitive information. You can perform a data wipe using the following command:
