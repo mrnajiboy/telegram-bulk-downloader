@@ -71,4 +71,4 @@ python rename_telegram_bulk_dl_files.py
 # or
 python3 rename_telegram_bulk_dl_files.py
 ```
-Run this in your file output directory for quicker access, or enter the input file directory when prompted.
+Run this in your file output directory for quicker directory selection.
