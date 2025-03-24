@@ -32,7 +32,7 @@ To start downloading media files from a Telegram chat, simply run the `telegram-
 ### Finding Chat/Topic/Message IDs:
 The easiest way to find these IDs is to use the [Desktop](https://desktop.telegram.org/) or [Web](https://web.telegram.org/) app, right-click on any message, or create a new message and post, then select 'Copy Message Link' to parse the IDs from the URL. 
 
-The URL has the following structure: https://t.me/c/XXXXXXXXXX/YYYY/ZZZZ.<br>
+The URL has the following structure: t.me/c/XXXXXXXXXX/YYYY/ZZZZ.<br>
 - The Chat ID is the XX.. portion of the URL with -100 prepended. (i.e. -1001234567891 or -1001987654321)
 - The Topic ID is the YYYY portion of the URL.
 - The Message ID is the ZZZZ portion of the URL.
