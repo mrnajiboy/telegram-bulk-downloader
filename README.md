@@ -55,10 +55,11 @@ I also noticed files are downloaded and saved with their Telegram ID value inste
 - Python 2.x
 
 ### Running the Script
-To execute the script, run:
+To execute the script:
 
 ```shell
 python rename_telegram_bulk_dl_files.py
 # or
 python3 rename_telegram_bulk_dl_files.py
 ```
+Run this in your file output directory for quicker access, or enter in the file directory when prompted.
