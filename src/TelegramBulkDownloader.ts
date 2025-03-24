@@ -134,7 +134,7 @@ class TelegramBulkDownloader {
         metadata,
         mediaTypes: mediaTypes.map((e) => ({ type: e, offset: 0 })),
         originalId: query.id, // Modified this line with a comma
-        threadId: threadQuery.threadId  // Added this line
+        threadId: threadQuery.threadId 
 
       });
       await this.download(res);
@@ -274,26 +274,26 @@ class TelegramBulkDownloader {
 }
 
 
-  private async resume() { // Added this line
-    if (!this.client) throw new Error('TelegramClient undefined'); // Added this line
-    const res = await inquirer.prompt<ResumeOption>({ // Added this line
-      name: 'resume', // Added this line
-      type: 'list', // Added this line
-      message: 'Choose a chat', // Added this line
-      choices: [ // Added this line
-        ...this.state // Added this line
-          .list() // Added this line
-          .map((e) => { // Added this line
-            const state = this.state.get(e); // Added this line
-            const threadInfo = state.threadId ? ` (Topic ID: ${state.threadId})` : ''; // Added this line
-            return { // Added this line
-              name: `${state.displayName || e}${threadInfo}`, // Added this line
-              value: e // Added this line
-            }; // Added this line
-          }), // Added this line
-        { name: 'Back', value: 'backbutton' }, // Added this line
-      ], // Added this line
-    }); // Added this line
+  private async resume() {
+    if (!this.client) throw new Error('TelegramClient undefined');
+    const res = await inquirer.prompt<ResumeOption>({
+      name: 'resume',
+      type: 'list',
+      message: 'Choose a chat',
+      choices: [
+        ...this.state
+          .list()
+          .map((e) => {
+            const state = this.state.get(e);
+            const threadInfo = state.threadId ? ` (Topic ID: ${state.threadId})` : '';
+            return {
+              name: `${state.displayName || e}${threadInfo}`,
+              value: e
+            };
+          }),
+        { name: 'Back', value: 'backbutton' },
+      ],
+    });
 
 
     if (res.resume === 'backbutton') {
