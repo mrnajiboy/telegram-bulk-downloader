@@ -51,4 +51,7 @@ I noticed that this didn't have any ability to filter via Topics, so I added the
 # Bulk File Renaming
 I also noticed files are downloaded and saved with their Telegram ID value instead of the original filenames, so I created a lightweight python script that will help you create a folder with copied files, containing the originally-named files and auto-convert .mpga files to .mp3 for convenience.
 
-To run, simply use the following command: ```shell python/python3 rename_telegram_bulk_dl_files```
+To run, simply use the following command: 
+```shell 
+python/python3 rename_telegram_bulk_dl_files
+```
