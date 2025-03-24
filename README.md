@@ -57,7 +57,7 @@ This project is licensed under the [MIT License](LICENSE).
 I noticed that this didn't have any ability to filter via [Topics](https://telegram.org/blog/topics-in-groups-collectible-usernames) for Larger Channels (which are basically separator threads), so I added the function and verbiage in the cli navigation. If a channel ID is detected as a forum it will automatically ask you if you'd like to filter for Topics.
 
 ## Bulk File Renaming
-I also noticed files are downloaded and saved with their Telegram ID value instead of the original filenames, so I created a lightweight python script that will help you create a folder with copied files, containing the originally-named files and auto-convert .mpga files to .mp3 for convenience, so long as you have included the metadata.json file in your download.
+I also noticed files are downloaded and saved with their Telegram ID value instead of the original filenames, so I created a lightweight python script that will help you create a folder with copied files, containing the originally-named files and auto-convert .mpga files to .mp3 for convenience, so long as you selected to include the metadata.json file with your download.
 
 ### Prerequisites
 - Python 2.x
