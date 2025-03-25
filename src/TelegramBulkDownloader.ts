@@ -133,7 +133,7 @@ class TelegramBulkDownloader {
         outPath: path.resolve(outPath),
         metadata,
         mediaTypes: mediaTypes.map((e) => ({ type: e, offset: 0 })),
-        originalId: query.id, // Modified this line with a comma
+        originalId: query.id,
         threadId: threadQuery.threadId 
 
       });
@@ -162,13 +162,27 @@ class TelegramBulkDownloader {
     this.isDownloading = true;
     const id = entity.id.toString();
 
+    // Initialize metadata handling once, outside the loop
+    const metadataOption = this.state.get(id).metadata;
+    let jsonSerializer;
+    if (metadataOption) {
+        jsonSerializer = new JsonSerializer(
+            path.join(this.state.get(id).outPath, 'metadata.json')
+        );
+    }
+
+    const downloadDir = this.state.get(id).outPath;
+    if (!fs.existsSync(downloadDir)) {
+        fs.mkdirSync(downloadDir, { recursive: true });
+    }
+
     while (true) {
         let offset = this.state
             .get(id)
             .mediaTypes.find((e: any) => e.type === mediaType).offset;
 
         // Use messages.search to get messages from the specific topic
-        const messages = await this.client.invoke(
+        const result = await this.client.invoke(
             new Api.messages.Search({
                 peer: entity,
                 q: '', // empty search query
@@ -184,20 +198,13 @@ class TelegramBulkDownloader {
                 topMsgId: Number(this.state.get(id).threadId), // This is key for topic filtering
                 fromId: undefined
             })
-         ) as { messages: any[] }; // Type assertion for result
+        ) as { messages: any[] }; // Type assertion for result
 
-        const mediaMessages = messages.messages;
-        
-        const metadataOption = this.state.get(id).metadata;
-        let jsonSerializer;
-        if (metadataOption) {
-            jsonSerializer = new JsonSerializer(
-                path.join(this.state.get(id).outPath, 'metadata.json')
-            );
-        }
-        const downloadDir = this.state.get(id).outPath;
-        if (!fs.existsSync(downloadDir)) {
-            fs.mkdirSync(downloadDir, { recursive: true });
+        const mediaMessages = result.messages;
+
+        // Break if no more messages
+        if (!mediaMessages.length) {
+            break;
         }
 
         let msgId = offset;
@@ -232,14 +239,22 @@ class TelegramBulkDownloader {
             } catch (err) {
                 console.warn(err);
             }
-            if (metadataOption && jsonSerializer) {  // Check both conditions
-              (jsonSerializer as any).append(msg);
-          }
-      
+
+            if (metadataOption && jsonSerializer) {
+                try {
+                    await (jsonSerializer as any).append(msg);
+                } catch (err) {
+                    console.warn('Error appending to metadata:', err);
+                }
+            }
+
             if (this.SIGINT) break;
         }
 
-        offset = mediaMessages.length <= 0 ? offset + 999 : msgId;
+        // Update offset based on the last processed message
+        if (mediaMessages.length > 0) {
+            offset = mediaMessages[mediaMessages.length - 1].id;
+        }
 
         this.state.set(id, {
             ...this.state.get(id),
@@ -260,8 +275,10 @@ class TelegramBulkDownloader {
             await this.state.commit();
             process.exit(0);
         }
-        if (offset >= this.state.get(id).limit) {
-            console.log(`Exiting, SIGINT=${this.SIGINT}`);
+
+        // Break if we got fewer messages than requested (reached the end)
+        if (mediaMessages.length < 100) {
+            console.log(`Reached end of messages for ${mediaType}`);
             this.state.set(id, {
                 ...this.state.get(id),
                 mediaTypes: this.state
